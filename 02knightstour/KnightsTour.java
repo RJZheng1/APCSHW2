@@ -63,9 +63,9 @@ public class KnightsTour{
 	    return true;
 	if(x >= 0 && x < board.length && y >= 0 && y < board.length){
 	    //	    System.out.println(this);
+	    //      wait(30);
 	    if(board[x][y] == -1){
 		board[x][y] = currentMoveNumber;
-		//		wait(20);
 		if(solve(x-1,y+2,currentMoveNumber+1) ||
 		   solve(x+1,y+2,currentMoveNumber+1) ||
 		   solve(x+2,y+1,currentMoveNumber+1) ||
@@ -82,11 +82,14 @@ public class KnightsTour{
     }
     
     public static void main(String[] args){
-	
 	KnightsTour kt = new KnightsTour(Integer.parseInt(args[0]));
 	if(kt.solve())
 	    System.out.println(kt);
 	else
 	    System.out.println("No solution");
+    }
+
+    public String name(){
+	return "zheng.rijiu";
     }
 }
