@@ -80,7 +80,7 @@ public class NQueens{
 	return true;
     }
 
-    public void reversemark(int x,int y){
+    public void reverseMark(int x,int y){
 	for(int n = 1;x + n < board.length;n++){
 	    if(y - n >= 0){
 		if(checkQueens(x + n, y - n, -1))
@@ -119,15 +119,20 @@ public class NQueens{
 	    }
 	}
 	board[x][y] = 'O';
-	reversemark(x,y);
+	reverseMark(x,y);
 	return false;
     }
 
     public static void main(String[] args){
 	NQueens nq = new NQueens(Integer.parseInt(args[0]));
+	System.out.println(nq.name());
 	if(nq.solve(Integer.parseInt(args[1])))
 	    System.out.println(nq);
 	else
 	    System.out.println("No solution");
+    }
+
+    public String name(){
+	return "zheng.rijiu";
     }
 }

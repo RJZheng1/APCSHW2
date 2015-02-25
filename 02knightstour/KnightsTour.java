@@ -51,11 +51,11 @@ public class KnightsTour{
     }
 
     public boolean solve(){
-	return solve(0,0);
+	return solve(0,0,0);
     }
     
     public boolean solve(int startx, int starty){
-	return solve(0,0,0);
+	return solve(startx,starty,0);
     }
     
     public boolean solve(int x,int y,int currentMoveNumber){
@@ -83,7 +83,8 @@ public class KnightsTour{
     
     public static void main(String[] args){
 	KnightsTour kt = new KnightsTour(Integer.parseInt(args[0]));
-	if(kt.solve())
+	System.out.println(kt.name());
+	if(kt.solve(Integer.parseInt(args[1]),Integer.parseInt(args[2])))
 	    System.out.println(kt);
 	else
 	    System.out.println("No solution");
