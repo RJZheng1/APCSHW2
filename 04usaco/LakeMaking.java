@@ -2,12 +2,8 @@ import java.io.*;
 import java.util.*;
 
 public class LakeMaking{
-    private int R;
-    private int C;
-    private int E;
-    private int N;
-    private int[][] pasture;
-    private int[][] instructions;
+    private int R, C, E, N;
+    private int[][] pasture, instructions;
 
     public static void main(String[] args) throws FileNotFoundException{
 	LakeMaking lm = new LakeMaking(args[0]);
