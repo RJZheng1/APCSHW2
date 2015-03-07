@@ -1,32 +1,37 @@
 import java.util.*;
 
 public class QuickSelect{
-    public static void partition(int[] ary,int s,int e){
-	Random r = new Random();
-	int p = ary[r.nextInt(e-s)+s];
-	System.out.println(p);
-	int[] d = new int[e-s];
-	int cs = 0;
-	int ce = d.length-1;
-	for(int i = s;i < e;i++){
-	    if(ary[i] < p)
-		d[cs++] = ary[i];
-	    if(ary[i] > p)
-		d[ce--] = ary[i];
+    public static int quickSelect(int[] ary, int n){
+	return quickSelect(ary,0,ary.length,n);
+    }
+
+    public static int quickSelect(int[] ary,int s,int e, int n){
+	int p = ary[(int)(Math.random()*(e-s))+s];
+	int cs = s;
+	int ce = e-1;
+	int swap;
+	for(int i = s;cs != ce;i++){
+	    if(ary[i] < p){
+		swap = ary[cs];
+		ary[cs++] = ary[i];
+		ary[i] = swap;
+	    }else if(ary[i] > p){
+		swap = ary[ce];
+		ary[ce--] = ary[i];
+		ary[i] = swap;
+		i--;
+	    }
 	}
-	d[cs] = p;
-	for(int i = 0;i < d.length;i++)
-	    ary[i+s] = d[i];
+	if(cs == n)
+	    return cs;
+	else if(cs > n)
+	    return quickSelect(ary,s,p,n);
+	else
+	    return quickSelect(ary,p+1,e,n);
     }
 
     public static void main(String[] args){
-	int[] a = new int[]{79,84,56,12,97,65,48,73,98,46};
-	for(int i = 0;i < a.length;i++)
-	    System.out.print(a[i] + " ");
-	System.out.println("");
-	partition(a,0,a.length);
-	for(int i = 0;i < a.length;i++)
-	    System.out.print(a[i] + " ");
-	System.out.println("");
+	int[] a = new int[]{3,5,9,2,0,1,4,8,6,7};
+	System.out.println(quickSelect(a,Integer.parseInt(args[0])));
     }
 }
