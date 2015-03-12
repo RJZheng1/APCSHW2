@@ -6,13 +6,25 @@ public class MyLinkedList{
 
     public void add(int value){
 	LNode now = first;
-	LNode last = new LNode(value);
 	try{
 	    while(now.getNext() != null)
 		now = now.getNext();
-	    now.setNext(last);
+	    now.setNext(new LNode(value));
 	}catch(NullPointerException e){
-	    first = last;
+	    first = new LNode(value);
+	}
+    }
+
+    public void add(int index, int value){
+	LNode now = first;
+	if(index < 0)
+	    throw new IndexOutOfBoundsException();
+	try{
+	    for(int i = 0;i < index - 1;i++)
+		now = now.getNext();
+	    now.setNext(new LNode(value,now.getNext()));
+	}catch(NullPointerException e){
+	    throw new IndexOutOfBoundsException();
 	}
     }
 
@@ -32,6 +44,7 @@ public class MyLinkedList{
 	l.add(2);
 	l.add(6);
 	l.add(9);
+	l.add(1,4);
 	System.out.println(l);
     }
 }
