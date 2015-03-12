@@ -1,10 +1,10 @@
 public class MyLinkedList{
-    LNode first;
+    private LNode first;
 
     public MyLinkedList(){
     }
 
-    public void add(int value){
+    public boolean add(int value){
 	LNode now = first;
 	try{
 	    while(now.getNext() != null)
@@ -13,29 +13,75 @@ public class MyLinkedList{
 	}catch(NullPointerException e){
 	    first = new LNode(value);
 	}
+	return true;
     }
 
     public void add(int index, int value){
+	if(index < 0 || index > size())
+	    throw new IndexOutOfBoundsException();
 	LNode now = first;
-	if(index < 0)
+	for(int i = 0;i < index - 1;i++)
+	    now = now.getNext();
+	now.setNext(new LNode(value,now.getNext()));
+    }
+
+    public int get(int index){
+	if(index < 0 || index >= size())
 	    throw new IndexOutOfBoundsException();
-	try{
-	    for(int i = 0;i < index - 1;i++)
-		now = now.getNext();
-	    now.setNext(new LNode(value,now.getNext()));
-	}catch(NullPointerException e){
-	    throw new IndexOutOfBoundsException();
+	LNode now = first;
+	for(int i = 0;i < index - 1;i++)
+	    now = now.getNext();
+	return now.getValue();
+    }
+
+    public int indexOf(int element){
+	LNode now = first;
+	for(int i = 0;now != null;i++){
+	    if(now.getValue() == element)
+		return i;
+	    now = now.getNext();
 	}
+	return -1;
+    }
+
+    public int remove(int index){
+	if(index < 0 || index >= size())
+	    throw new IndexOutOfBoundsException();
+	LNode now = first;
+	for(int i = 0;i < index - 2;i ++)
+	    now = now.getNext();
+	int old = now.getNext().getValue();
+	now.setNext(now.getNext().getNext());
+	return old;
+    }
+
+    public void set(int index, int value){
+	if(index < 0 || index >= size())
+	    throw new IndexOutOfBoundsException();
+	LNode now = first;
+	for(int i = 0;i < index - 1;i++)
+	    now = now.getNext();
+	now.setValue(value);
+    }
+
+    public int size(){
+	LNode now = first;
+	int s = 0;
+	while(now != null){
+	    now = now.getNext();
+	    s++;
+	}
+	return s;
     }
 
     public String toString(){
-	String result = "";
+	String result = "[ ";
 	LNode now = first;
 	while(now.getNext() != null){
-	    result += now.toString() + ", ";
+	    result += now + ", ";
 	    now = now.getNext();
 	}
-	result += now.toString();
+	result += (now.toString() + " ]");
 	return result;
     }
 
@@ -45,6 +91,12 @@ public class MyLinkedList{
 	l.add(6);
 	l.add(9);
 	l.add(1,4);
+	l.add(4,5);
+	System.out.println(l);
+	System.out.println(l.get(0));
+	l.set(0,1);
+	System.out.println(l);
+	l.remove(1);
 	System.out.println(l);
     }
 }
