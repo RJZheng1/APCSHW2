@@ -1,42 +1,45 @@
-public class MyLinkedList{
-    private LNode first;
-    private LNode last;
+public class MyLinkedList<T>{
+    private LNode<T> first,last;
     private int size;
 
+    public String name(){
+	return "zheng.rijiu";
+    }
+
     public MyLinkedList(){
-	first = new LNode(0);
+	first = new LNode<T>(new Integer(0));
 	last = first;
 	size = 0;
     }
 
-    public boolean add(int value){
-	last.setNext(new LNode(value));
+    public boolean add(T value){
+	last.setNext(new LNode<T>(value));
 	last = last.getNext();
 	size++;
 	return true;
     }
 
-    public void add(int index, int value){
+    public void add(int index, T value){
 	if(index < 0 || index > size())
 	    throw new IndexOutOfBoundsException();
-	LNode now = first;
+	LNode<T> now = first;
 	for(int i = 0;i < index;i++)
 	    now = now.getNext();
-	now.setNext(new LNode(value,now.getNext()));
+	now.setNext(new LNode<T>(value,now.getNext()));
 	size++;
     }
 
-    public int get(int index){
+    public T get(int index){
 	if(index < 0 || index >= size())
 	    throw new IndexOutOfBoundsException();
-	LNode now = first.getNext();
+	LNode<T> now = first.getNext();
 	for(int i = 0;i < index;i++)
 	    now = now.getNext();
 	return now.getValue();
     }
 
-    public int indexOf(int element){
-	LNode now = first.getNext();
+    public int indexOf(T element){
+	LNode<T> now = first.getNext();
 	for(int i = 0;now.getNext() != null;i++){
 	    if(now.getValue() == element)
 		return i;
@@ -45,25 +48,25 @@ public class MyLinkedList{
 	return -1;
     }
 
-    public int remove(int index){
+    public T remove(int index){
 	if(index < 0 || index >= size())
 	    throw new IndexOutOfBoundsException();
-	LNode now = first;
+	LNode<T> now = first;
 	for(int i = 0;i < index;i ++)
 	    now = now.getNext();
-	int old = now.getNext().getValue();
+	T old = now.getNext().getValue();
 	now.setNext(now.getNext().getNext());
 	size--;
 	return old;
     }
 
-    public int set(int index, int value){
+    public T set(int index, T value){
 	if(index < 0 || index >= size())
 	    throw new IndexOutOfBoundsException();
-	LNode now = first.getNext();
+	LNode<T> now = first.getNext();
 	for(int i = 0;i < index;i++)
 	    now = now.getNext();
-	int old = now.getValue();
+	T old = now.getValue();
 	now.setValue(value);
 	return old;
     }
@@ -84,20 +87,20 @@ public class MyLinkedList{
     }
 
     public static void main(String[] args){
-	MyLinkedList l = new MyLinkedList();
-	l.add(2);
-	l.add(6);
-	l.add(9);
-	l.add(1,4);
-	l.add(4,5);
+	MyLinkedList<T> l = new MyLinkedList<T>();
+	l.add(new Integer(2));
+	l.add(new Integer(6));
+	l.add(new Integer(9));
+	l.add(1,new Integer(4));
+	l.add(4,new Integer(5));
 	System.out.println(l);
 	System.out.println(l.get(0));
-	System.out.println(l.set(0,1));
+	System.out.println(l.set(0,new Integer(1)));
 	System.out.println(l);
 	System.out.println(l.remove(1));
 	System.out.println(l);
-	System.out.println(l.indexOf(6));
-	System.out.println(l.indexOf(53));
+	System.out.println(l.indexOf(new Integer(6)));
+	System.out.println(l.indexOf(new Integer(53)));
 	System.out.println(l.size());
     }
 }
