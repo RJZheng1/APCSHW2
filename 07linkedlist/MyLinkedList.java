@@ -2,12 +2,8 @@ public class MyLinkedList<T>{
     private LNode<T> first,last;
     private int size;
 
-    public String name(){
-	return "zheng.rijiu";
-    }
-
     public MyLinkedList(){
-	first = new LNode<T>(new Integer(0));
+	first = new LNode<T>();
 	last = first;
 	size = 0;
     }
@@ -41,11 +37,15 @@ public class MyLinkedList<T>{
     public int indexOf(T element){
 	LNode<T> now = first.getNext();
 	for(int i = 0;now.getNext() != null;i++){
-	    if(now.getValue() == element)
+	    if(now.getValue().equals(element))
 		return i;
 	    now = now.getNext();
 	}
 	return -1;
+    }
+
+    public String name(){
+	return "zheng.rijiu";
     }
 
     public T remove(int index){
@@ -87,7 +87,7 @@ public class MyLinkedList<T>{
     }
 
     public static void main(String[] args){
-	MyLinkedList<T> l = new MyLinkedList<T>();
+	MyLinkedList<Integer> l = new MyLinkedList<Integer>();
 	l.add(new Integer(2));
 	l.add(new Integer(6));
 	l.add(new Integer(9));

@@ -2,6 +2,10 @@ public class LNode<T>{
     private T value;
     private LNode<T> next;
 
+    public LNode(){
+	this(null);
+    }
+
     public LNode(T value){
 	this(value,null);
     }

@@ -63,4 +63,8 @@ public class Sorts{
 	quickSort(ary);
 	System.out.println(Arrays.toString(ary));
     }
+
+    public String name(){
+	return "zheng.rijiu";
+    }
 }

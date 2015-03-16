@@ -55,4 +55,8 @@ public class Sorts{
 	}
 	return result;
     }
+
+    public String name(){
+	return "zheng.rijiu";
+    }
 }

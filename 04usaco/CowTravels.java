@@ -48,4 +48,8 @@ public class CowTravels{
 	t--;
 	return move(r+1,c,t) + move(r,c+1,t) + move(r-1,c,t) + move(r,c-1,t);
     }
+
+    public static String name(){
+	return "zheng.rijiu";
+    }
 }

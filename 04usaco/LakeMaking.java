@@ -64,4 +64,8 @@ public class LakeMaking{
 	}
 	return e * 72 * 72;
     }
+    
+    public String name(){
+	return "zheng.rijiu";
+    }
 }
