@@ -1,4 +1,6 @@
-public class MyLinkedList<T>{
+import java.util.*;
+
+public class MyLinkedList<T> implements Iterable<T>{
     private LNode<T> first,last;
     private int size;
 
@@ -44,6 +46,10 @@ public class MyLinkedList<T>{
 	return -1;
     }
 
+    public Iterator<T> iterator(){
+	return new MyLLIterator<T>();
+    }
+
     public String name(){
 	return "zheng.rijiu";
     }
@@ -86,6 +92,24 @@ public class MyLinkedList<T>{
 	return result;
     }
 
+    private class MyLLIterator<T> implements Iterator<T>{
+	LNode<T>  curr;
+	public MyLLIterator(){
+	    curr = first.getNext();
+	}
+	public boolean hasNext(){
+	    return curr.getNext() != null;
+	}
+	public T next(){
+	    T res = curr.getValue();
+	    curr = curr.getNext();
+	    return res;
+	}
+	public void remove(){
+	    throw new UnsupportedOperationException();
+	}
+    }
+
     public static void main(String[] args){
 	MyLinkedList<Integer> l = new MyLinkedList<Integer>();
 	l.add(new Integer(2));
@@ -102,5 +126,7 @@ public class MyLinkedList<T>{
 	System.out.println(l.indexOf(new Integer(6)));
 	System.out.println(l.indexOf(new Integer(53)));
 	System.out.println(l.size());
+	for(Integer i:l)
+	    System.out.println(i);
     }
 }
