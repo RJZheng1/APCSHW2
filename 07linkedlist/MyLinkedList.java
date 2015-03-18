@@ -47,7 +47,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     public Iterator<T> iterator(){
-	return new MyLLIterator<T>();
+	return new MyLLIterator();
     }
 
     public String name(){
@@ -92,13 +92,13 @@ public class MyLinkedList<T> implements Iterable<T>{
 	return result;
     }
 
-    private class MyLLIterator<T> implements Iterator<T>{
-	LNode<T>  curr;
+    private class MyLLIterator implements Iterator<T>{
+	LNode<T> curr;
 	public MyLLIterator(){
 	    curr = first.getNext();
 	}
 	public boolean hasNext(){
-	    return curr.getNext() != null;
+	    return curr != null;
 	}
 	public T next(){
 	    T res = curr.getValue();
