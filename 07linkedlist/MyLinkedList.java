@@ -20,11 +20,15 @@ public class MyLinkedList<T> implements Iterable<T>{
     public void add(int index, T value){
 	if(index < 0 || index > size())
 	    throw new IndexOutOfBoundsException();
-	LNode<T> now = first;
-	for(int i = 0;i < index;i++)
-	    now = now.getNext();
-	now.setNext(new LNode<T>(value,now.getNext()));
-	size++;
+	if(index == size())
+	    add(value);
+	else{
+	    LNode<T> now = first;
+	    for(int i = 0;i < index;i++)
+		now = now.getNext();
+	    now.setNext(new LNode<T>(value,now.getNext()));
+	    size++;
+	}
     }
 
     public T get(int index){
@@ -62,7 +66,8 @@ public class MyLinkedList<T> implements Iterable<T>{
 	    now = now.getNext();
 	T old = now.getNext().getValue();
 	now.setNext(now.getNext().getNext());
-	size--;
+	if(--size == index)
+	    last = now;
 	return old;
     }
 
@@ -118,14 +123,10 @@ public class MyLinkedList<T> implements Iterable<T>{
 	l.add(1,new Integer(4));
 	l.add(4,new Integer(5));
 	System.out.println(l);
-	System.out.println(l.get(0));
-	System.out.println(l.set(0,new Integer(1)));
+	System.out.println(l.remove(4));
 	System.out.println(l);
-	System.out.println(l.remove(1));
+	l.add(5);
 	System.out.println(l);
-	System.out.println(l.indexOf(new Integer(6)));
-	System.out.println(l.indexOf(new Integer(53)));
-	System.out.println(l.size());
 	for(Integer i:l)
 	    System.out.println(i);
     }
