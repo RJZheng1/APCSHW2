@@ -98,7 +98,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     private class MyLLIterator implements Iterator<T>{
-	LNode<T> curr;
+	private LNode<T> curr;
 	public MyLLIterator(){
 	    curr = first.getNext();
 	}
@@ -106,9 +106,12 @@ public class MyLinkedList<T> implements Iterable<T>{
 	    return curr != null;
 	}
 	public T next(){
-	    T res = curr.getValue();
-	    curr = curr.getNext();
-	    return res;
+	    if(hasNext()){
+		T res = curr.getValue();
+		curr = curr.getNext();
+		return res;
+	    }else
+		throw new NoSuchElementException();
 	}
 	public void remove(){
 	    throw new UnsupportedOperationException();
