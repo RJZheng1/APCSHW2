@@ -41,6 +41,22 @@ public class MyDeque<T>{
 	return (T)stuffs[end-1];
     }
 
+    public T removeFirst(){
+	if(size == 0)
+	    throw new NoSuchElementException();
+	T old = (T)stuffs[++start];
+	size--;
+	return old;
+    }
+
+    public T removeLast(){
+	if(size == 0)
+	    throw new NoSuchElementException();
+	T old = (T)stuffs[--end];
+	size--;
+	return old;
+    }
+
     public String toString(){
 	return Arrays.toString(stuffs);
     }
@@ -76,5 +92,10 @@ public class MyDeque<T>{
 	System.out.println(MDQ);
 	System.out.println(MDQ.getFirst());
 	System.out.println(MDQ.getLast());
+	System.out.println(MDQ.removeFirst());
+	System.out.println(MDQ.removeLast());
+	MDQ.addFirst("REPLACES nomoreideas");
+	MDQ.addLast("REPLACES NOTAFRUIT");
+	System.out.println(MDQ);
     }
 }
