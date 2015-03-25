@@ -58,7 +58,15 @@ public class MyDeque<T>{
     }
 
     public String toString(){
-	return Arrays.toString(stuffs);
+	String result = "[ ";
+	int n = start + 1;
+	while(n != end - 1){
+	    if(n == stuffs.length)
+		n = 0;
+	    result += stuffs[n++].toString() + " ";
+	}
+	result += stuffs[n].toString() + " ]";
+	return result;
     }
 
     private void resize(){
