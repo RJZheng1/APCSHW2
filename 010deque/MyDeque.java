@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class MyDeque<T>{
     private Object[] stuffs;
@@ -29,6 +29,18 @@ public class MyDeque<T>{
 	size++;
     }
 
+    public T getFirst(){
+	if(size == 0)
+	    throw new NoSuchElementException();
+	return (T)stuffs[start+1];
+    }
+
+    public T getLast(){
+	if(size == 0)
+	    throw new NoSuchElementException();
+	return (T)stuffs[end-1];
+    }
+
     public String toString(){
 	return Arrays.toString(stuffs);
     }
@@ -36,11 +48,13 @@ public class MyDeque<T>{
     private void resize(){
 	Object[] newone = new Object[stuffs.length*2];
 	int x = 0;
-	for(int n = start+1;n != end-1;n++){
+	int n = start + 1;
+	while(n != end - 1){
 	    if(n == stuffs.length)
 		n = 0;
-	    newone[x++] = stuffs[n];
+	    newone[x++] = stuffs[n++];
 	}
+	newone[x] = stuffs[n];
 	start = newone.length - 1;
 	end = stuffs.length;
 	stuffs = newone;
@@ -60,5 +74,7 @@ public class MyDeque<T>{
 	System.out.println(MDQ);
 	MDQ.addFirst("nomoreideas");
 	System.out.println(MDQ);
+	System.out.println(MDQ.getFirst());
+	System.out.println(MDQ.getLast());
     }
 }
