@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 public class Maze{
-    private Deque<int[]> frontier;
+    private Deque<Coordinate> frontier;
     private char[][]maze;
     private int startx,starty;
     private int maxx,maxy;
@@ -9,8 +9,33 @@ public class Maze{
     private static final String hide =  "\033[?25l";
     private static final String show =  "\033[?25h";
     
+    private class Coordinate{
+	int x,y,size;
+	Coordinate prev;
+	public Coordinate(int x, int y){
+	    this.x = x;
+	    this.y = y;
+	    size = 0;
+	    prev = null;
+	}
+	public Coordinate(int x, int y, Coordinate prev){
+	    this.x = x;
+	    this.y = y;
+	    this.prev = prev;
+	    size = prev.getSize() + 1;
+	}
+
+	public int[] getCoords(){
+	    return new int[]{x,y};
+	}
+
+	public int getSize(){
+	    return size;
+	}
+    }
+
     public Maze(String filename){
-	frontier = new LinkedList<int[]>();
+	frontier = new LinkedList<Coordinate>();
 	startx = -1;
 	starty = -1;
 	String ans = "";
@@ -65,7 +90,7 @@ public class Maze{
     public String toString(boolean animate){
 	if(!animate)
 	    return toString();
-	wait(100);
+	wait(60);
 	String ans = ""+maxx+","+maxy+"\n";
 	for(int i=0;i<maxx*maxy;i++){
 	    if(i%maxx ==0 && i!=0)
@@ -76,16 +101,17 @@ public class Maze{
     }
 
     public boolean solveBFS(boolean animate){
-	int[] current = new int[]{startx,starty};
-	while(maze[current[0]][current[1]] != 'E'){
-	    if(maze[current[0]+1][current[1]] == ' ')
-		frontier.addLast(new int[]{current[0]+1,current[1]});
-	    if(maze[current[0]][current[1]+1] == ' ')
-		frontier.addLast(new int[]{current[0],current[1]+1});
-	    if(maze[current[0]-1][current[1]] == ' ')
-		frontier.addLast(new int[]{current[0]-1,current[1]});
-	    if(maze[current[0]][current[1]-1] == ' ')
-		frontier.addLast(new int[]{current[0],current[1]-1});
+	Coordinate current = new Coordinate(startx,starty);
+	char[] good = new char[]{' ','E'};
+	while(maze[current.getX()][current.getY()] != 'E'){
+	    if(Arrays.binarySearch(good,maze[current[0]+1][current[1]]) >= 0)
+		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
+	    if(Arrays.binarySearch(good,maze[current[0]][current[1]+1]) >= 0)
+		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
+	    if(Arrays.binarySearch(good,maze[current[0]-1][current[1]]) >= 0)
+		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
+	    if(Arrays.binarySearch(good,maze[current[0]][current[1]-1]) >= 0)
+		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
 	    if(animate){
 		maze[current[0]][current[1]] = 'x';
 		System.out.println(toString(true));
