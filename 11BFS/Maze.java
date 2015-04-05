@@ -5,6 +5,7 @@ public class Maze{
     private int coords;
     private int startx,starty;
     private int maxx,maxy;
+    private int[] solution;
     private static final String clear =  "\033[2J";
     private static final String hide =  "\033[?25l";
     private static final String show =  "\033[?25h";
@@ -143,13 +144,13 @@ public class Maze{
 	for(int i=0;i<maxx*maxy;i++){
 	    if(i%maxx ==0 && i!=0)
 		ans+="\n";
-	    ans += maze[i%maxx][i/maxx];
+ 	    ans += maze[i%maxx][i/maxx];
 	}
 	return clear + hide + go(0,0) + ans + "\n" + show;
     }
 
-    public boolean solveBFS(boolean animate){
-	Frontier f = new Frontier(true);
+    public boolean solve(boolean animate,boolean BFS){
+	Frontier f = new Frontier(BFS);
 	Coordinate current = new Coordinate(startx,starty);
 	while(maze[current.getX()][current.getY()] != 'E'){
 	    f.addMore(current);
@@ -160,15 +161,42 @@ public class Maze{
 		return false;
 	    current = f.remove();
 	}
-	while(current != null){
-	    System.out.println(Arrays.toString(current.getCoords()));
+	solution = new int[current.getSize()*2+2];
+	for(int n = solution.length;n > 0;){
+	    solution[--n] = current.getY();
+	    solution[--n] = current.getX();
 	    current = current.getNext();
 	}
 	return true;
     }
 
+    public boolean solveBFS(boolean animate){
+	return solve(animate,true);
+    }
+
+    public boolean solveDFS(boolean animate){
+	return solve(animate,false);
+    }
+
+    public boolean solveBFS(){
+	return solve(false,true);
+    }
+
+    public boolean solveDFS(){
+	return solve(false,false);
+    }
+
+    public int[] solutionCoordinates(){
+	if(solution == null)
+	   return new int[0];
+	else
+	    return solution;
+    }
+    
     public static void main(String[] args){
 	Maze m = new Maze(args[0]);
-	m.solveBFS(true);
+	System.out.println(m);
+	m.solveDFS(false);
+	System.out.println(Arrays.toString(m.solutionCoordinates()));
     }
 }
