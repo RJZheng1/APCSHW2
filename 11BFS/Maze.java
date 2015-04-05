@@ -3,6 +3,7 @@ import java.io.*;
 public class Maze{
     private Deque<Coordinate> frontier;
     private char[][]maze;
+    private int coords;
     private int startx,starty;
     private int maxx,maxy;
     private static final String clear =  "\033[2J";
@@ -29,8 +30,20 @@ public class Maze{
 	    return new int[]{x,y};
 	}
 
+	public Coordinate getNext(){
+	    return prev;
+	}
+	
 	public int getSize(){
 	    return size;
+	}
+	
+	public int getX(){
+	    return x;
+	}
+
+	public int getY(){
+	    return y;
 	}
     }
 
@@ -90,7 +103,7 @@ public class Maze{
     public String toString(boolean animate){
 	if(!animate)
 	    return toString();
-	wait(60);
+	wait(100);
 	String ans = ""+maxx+","+maxy+"\n";
 	for(int i=0;i<maxx*maxy;i++){
 	    if(i%maxx ==0 && i!=0)
@@ -104,21 +117,24 @@ public class Maze{
 	Coordinate current = new Coordinate(startx,starty);
 	char[] good = new char[]{' ','E'};
 	while(maze[current.getX()][current.getY()] != 'E'){
-	    if(Arrays.binarySearch(good,maze[current[0]+1][current[1]]) >= 0)
-		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
-	    if(Arrays.binarySearch(good,maze[current[0]][current[1]+1]) >= 0)
-		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
-	    if(Arrays.binarySearch(good,maze[current[0]-1][current[1]]) >= 0)
-		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
-	    if(Arrays.binarySearch(good,maze[current[0]][current[1]-1]) >= 0)
-		frontier.addLast(new Coordinate(current[0]+1,current[1],current));
-	    if(animate){
-		maze[current[0]][current[1]] = 'x';
+	    if(Arrays.binarySearch(good,maze[current.getX()+1][current.getY()]) >= 0)
+		frontier.addLast(new Coordinate(current.getX()+1,current.getY(),current));
+	    if(Arrays.binarySearch(good,maze[current.getX()][current.getY()+1]) >= 0)
+		frontier.addLast(new Coordinate(current.getX(),current.getY()+1,current));
+	    if(Arrays.binarySearch(good,maze[current.getX()-1][current.getY()]) >= 0)
+		frontier.addLast(new Coordinate(current.getX()-1,current.getY(),current));
+	    if(Arrays.binarySearch(good,maze[current.getX()][current.getY()-1]) >= 0)
+		frontier.addLast(new Coordinate(current.getX(),current.getY()-1,current));
+	    maze[current.getX()][current.getY()] = 'x';
+	    if(animate)
 		System.out.println(toString(true));
-	    }
 	    if(frontier.isEmpty())
 		return false;
 	    current = frontier.removeFirst();
+	}
+	while(current != null){
+	    System.out.println(Arrays.toString(current.getCoords()));
+	    current = current.getNext();
 	}
 	return true;
     }
