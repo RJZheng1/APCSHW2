@@ -167,6 +167,9 @@ public class Maze{
 	    solution[--n] = current.getX();
 	    current = current.getNext();
 	}
+	maze[startx][starty] = 'S';
+	for(int i = 2;i < solution.length-2;i++)
+	    maze[solution[i]][solution[++i]] = 'O';
 	return true;
     }
 
@@ -194,9 +197,14 @@ public class Maze{
     }
     
     public static void main(String[] args){
-	Maze m = new Maze(args[0]);
+	Maze m;
+	if(args.length > 0)
+	    m = new Maze(args[0]);
+	else
+	    m = new Maze("data1.dat");
 	System.out.println(m);
 	m.solveDFS(false);
 	System.out.println(Arrays.toString(m.solutionCoordinates()));
+	System.out.println(m);
     }
 }
