@@ -4,6 +4,7 @@ public class Maze{
     private char[][]maze;
     private int coords;
     private int startx,starty;
+    private int endx,endy;
     private int maxx,maxy;
     private int[] solution;
     private static final String clear =  "\033[2J";
@@ -49,30 +50,41 @@ public class Maze{
     }
 
     private class Frontier{
-	private Deque<Coordinate> frontier;
-	private boolean BFS;
+	private MyDeque<Coordinate> frontier;
+	private int mode;
 	
-	public Frontier(boolean BFS){
-	    frontier = new LinkedList<Coordinate>();
-	    this.BFS = BFS;
+	public Frontier(int mode){
+	    frontier = new MyDeque<Coordinate>();
+	    this.mode = mode;
 	}
 
 	public void add(Coordinate c){
-	    if(BFS)
+	    if(mode == 0)
 		frontier.addLast(c);
-	    else
+	    else if(mode == 1)
 		frontier.addFirst(c);
+	    else if(mode == 2)
+		frontier.add(c,Math.abs(c.getX() - endx) + Math.abs(c.getY() - endy));
 	}
 	
 	public void addMore(Coordinate c){
-	    if(Arrays.binarySearch(good,maze[c.getX()+1][c.getY()]) >= 0)
+	    if(Arrays.binarySearch(good,maze[c.getX()+1][c.getY()]) >= 0){
 		add(new Coordinate(c.getX()+1,c.getY(),c));
-	    if(Arrays.binarySearch(good,maze[c.getX()][c.getY()+1]) >= 0)
+		if(maze[c.getX()+1][c.getY()] != 'E')
+		    maze[c.getX()+1][c.getY()] = '?';
+	    }if(Arrays.binarySearch(good,maze[c.getX()][c.getY()+1]) >= 0){
 		add(new Coordinate(c.getX(),c.getY()+1,c));
-	    if(Arrays.binarySearch(good,maze[c.getX()-1][c.getY()]) >= 0)
+		if(maze[c.getX()][c.getY()+1] != 'E')
+		    maze[c.getX()][c.getY()+1] = '?';
+	    }if(Arrays.binarySearch(good,maze[c.getX()-1][c.getY()]) >= 0){
 		add(new Coordinate(c.getX()-1,c.getY(),c));
-	    if(Arrays.binarySearch(good,maze[c.getX()][c.getY()-1]) >= 0)
+		if(maze[c.getX()-1][c.getY()] != 'E')
+		    maze[c.getX()-1][c.getY()] = '?';
+	    }if(Arrays.binarySearch(good,maze[c.getX()][c.getY()-1]) >= 0){
 		add(new Coordinate(c.getX(),c.getY()-1,c));
+		if(maze[c.getX()][c.getY()-1] != 'E')
+		    maze[c.getX()][c.getY()-1] = '?';
+	    }
 	}
 
 	public boolean isEmpty(){
@@ -80,6 +92,8 @@ public class Maze{
 	}
 
 	public Coordinate remove(){
+	    if(mode == 2)
+		return frontier.removeSmallest();
 	    return frontier.removeFirst();
 	}
     }
@@ -87,6 +101,8 @@ public class Maze{
     public Maze(String filename){
 	startx = -1;
 	starty = -1;
+	endx = -1;
+	endy = -1;
 	String ans = "";
 	try{
 	    Scanner in = new Scanner(new File(filename));
@@ -110,6 +126,9 @@ public class Maze{
 	    if(c=='S'){
 		startx = i%maxx;
 		starty = i/maxx;
+	    }else if(c == 'E'){
+		endx = i%maxx;
+		endy = i/maxx;
 	    }
 	}
     }
@@ -149,8 +168,8 @@ public class Maze{
 	return clear + hide + go(0,0) + ans + "\n" + show;
     }
 
-    public boolean solve(boolean animate,boolean BFS){
-	Frontier f = new Frontier(BFS);
+    public boolean solve(boolean animate, int mode){
+	Frontier f = new Frontier(mode);
 	Coordinate current = new Coordinate(startx,starty);
 	while(maze[current.getX()][current.getY()] != 'E'){
 	    f.addMore(current);
@@ -174,19 +193,19 @@ public class Maze{
     }
 
     public boolean solveBFS(boolean animate){
-	return solve(animate,true);
+	return solve(animate,0);
     }
 
     public boolean solveDFS(boolean animate){
-	return solve(animate,false);
+	return solve(animate,1);
     }
 
     public boolean solveBFS(){
-	return solve(false,true);
+	return solve(false,0);
     }
 
     public boolean solveDFS(){
-	return solve(false,false);
+	return solve(false,1);
     }
 
     public int[] solutionCoordinates(){
@@ -198,13 +217,15 @@ public class Maze{
     
     public static void main(String[] args){
 	Maze m;
-	if(args.length > 0)
+	if(args.length > 2){
 	    m = new Maze(args[0]);
-	else
+	    m.solve(true,Integer.parseInt(args[1]));
+	}else if(args.length > 1){
+	    m = new Maze(args[0]);
+	    m.solve(false,Integer.parseInt(args[1]));
+	}else{
 	    m = new Maze("data1.dat");
-	System.out.println(m);
-	m.solveDFS(false);
-	System.out.println(Arrays.toString(m.solutionCoordinates()));
+	}
 	System.out.println(m);
     }
 }

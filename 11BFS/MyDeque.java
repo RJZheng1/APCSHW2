@@ -53,10 +53,14 @@ public class MyDeque<T>{
 	return (T)stuffs[end-1];
     }
 
+    public boolean isEmpty(){
+	return size == 0;
+    }
+
     public T removeFirst(){
 	if(size == 0)
 	    throw new NoSuchElementException();
-	T old = (T)stuffs[++start];
+	T old = (T)stuffs[++start % stuffs.length];
 	size--;
 	return old;
     }
@@ -64,7 +68,7 @@ public class MyDeque<T>{
     public T removeLast(){
 	if(size == 0)
 	    throw new NoSuchElementException();
-	T old = (T)stuffs[--end];
+	T old = (T)stuffs[--end % stuffs.length];
 	size--;
 	return old;
     }
