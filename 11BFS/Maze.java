@@ -47,6 +47,10 @@ public class Maze{
 	public int getY(){
 	    return y;
 	}
+
+	public String toString(){
+	    return "(" + x + "," + y + ")";
+	}
     }
 
     private class Frontier{
@@ -65,6 +69,8 @@ public class Maze{
 		frontier.addFirst(c);
 	    else if(mode == 2)
 		frontier.add(c,Math.abs(c.getX() - endx) + Math.abs(c.getY() - endy));
+	    else if(mode == 3)
+		frontier.add(c,Math.abs(c.getX() - endx) + Math.abs(c.getY() - endy) + c.getSize());
 	}
 	
 	public void addMore(Coordinate c){
@@ -92,9 +98,13 @@ public class Maze{
 	}
 
 	public Coordinate remove(){
-	    if(mode == 2)
+	    if(mode == 2 || mode == 3)
 		return frontier.removeSmallest();
 	    return frontier.removeFirst();
+	}
+
+	public String toString(){
+	    return frontier.toString();
 	}
     }
     
@@ -174,8 +184,10 @@ public class Maze{
 	while(maze[current.getX()][current.getY()] != 'E'){
 	    f.addMore(current);
 	    maze[current.getX()][current.getY()] = 'x';
-	    if(animate)
+	    if(animate){
 		System.out.println(toString(true));
+		System.out.println(f);
+	    }
 	    if(f.isEmpty())
 		return false;
 	    current = f.remove();

@@ -28,7 +28,7 @@ public class MyDeque<T>{
 	    resize();
 	if(start < 0)
 	    start = stuffs.length - 1;
-	stuffs[start--] = (Object)value;
+	stuffs[start-- % stuffs.length] = (Object)value;
 	size++;
     }
 
