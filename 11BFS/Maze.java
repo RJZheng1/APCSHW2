@@ -4,7 +4,7 @@ public class Maze{
     private char[][]maze;
     private int coords;
     private int startx,starty;
-    private int endx,endy;
+    public int endx,endy;
     private int maxx,maxy;
     private int[] solution;
     private static final String clear =  "\033[2J";
@@ -237,6 +237,7 @@ public class Maze{
 	    m.solve(false,Integer.parseInt(args[1]));
 	}else{
 	    m = new Maze("data1.dat");
+	    m.solveBFS();
 	}
 	System.out.println(m);
     }
