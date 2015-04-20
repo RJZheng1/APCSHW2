@@ -220,6 +220,22 @@ public class Maze{
 	return solve(false,1);
     }
 
+    public boolean solveBest(boolean animate){
+	return solve(animate,2);
+    }
+
+    public boolean solveBest(){
+	return solve(false,2);
+    }
+
+    public boolean solveAStar(boolean animate){
+	return solve(animate,3);
+    }
+
+    public boolean solveAStar(){
+	return solve(false,3);
+    }
+    
     public int[] solutionCoordinates(){
 	if(solution == null)
 	   return new int[0];
