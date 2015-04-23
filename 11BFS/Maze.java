@@ -4,7 +4,7 @@ public class Maze{
     private char[][]maze;
     private int coords;
     private int startx,starty;
-    private int endx,endy;
+    public int endx,endy;
     private int maxx,maxy;
     private int[] solution;
     private static final String clear =  "\033[2J";
@@ -220,6 +220,22 @@ public class Maze{
 	return solve(false,1);
     }
 
+    public boolean solveBest(boolean animate){
+	return solve(animate,2);
+    }
+
+    public boolean solveBest(){
+	return solve(false,2);
+    }
+
+    public boolean solveAStar(boolean animate){
+	return solve(animate,3);
+    }
+
+    public boolean solveAStar(){
+	return solve(false,3);
+    }
+    
     public int[] solutionCoordinates(){
 	if(solution == null)
 	   return new int[0];
@@ -237,6 +253,7 @@ public class Maze{
 	    m.solve(false,Integer.parseInt(args[1]));
 	}else{
 	    m = new Maze("data1.dat");
+	    m.solveBFS();
 	}
 	System.out.println(m);
     }

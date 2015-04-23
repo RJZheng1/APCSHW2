@@ -16,46 +16,52 @@ public class MyDeque<T>{
     public void add(T value, int priority){
 	if(size == stuffs.length)
 	    resize();
-	if(end == stuffs.length)
-	    end = 0;
 	stuffs[end] = (Object)value;
 	priorities[end++] = priority;
+	if(end == stuffs.length)
+	    end = 0;
 	size++;
     }
     
     public void addFirst(T value){
 	if(size == stuffs.length)
 	    resize();
+	stuffs[start--] = (Object)value;
 	if(start < 0)
 	    start = stuffs.length - 1;
-	stuffs[start--] = (Object)value;
 	size++;
     }
 
     public void addLast(T value){
 	if(size == stuffs.length)
 	    resize();
+	stuffs[end++] = (Object)value;
 	if(end == stuffs.length)
 	    end = 0;
-	stuffs[end++] = (Object)value;
 	size++;
     }
 
     public T getFirst(){
 	if(size == 0)
 	    throw new NoSuchElementException();
-	return (T)stuffs[start+1];
+	return (T)stuffs[(start + 1) % stuffs.length];
     }
 
     public T getLast(){
 	if(size == 0)
 	    throw new NoSuchElementException();
-	return (T)stuffs[end-1];
+	return (T)stuffs[(end - 1 + stuffs.length) % stuffs.length];
+    }
+
+    public boolean isEmpty(){
+	return size == 0;
     }
 
     public T removeFirst(){
 	if(size == 0)
 	    throw new NoSuchElementException();
+	if(start == stuffs.length - 1)
+	    start = -1;
 	T old = (T)stuffs[++start];
 	size--;
 	return old;
@@ -64,6 +70,8 @@ public class MyDeque<T>{
     public T removeLast(){
 	if(size == 0)
 	    throw new NoSuchElementException();
+	if(end == 0)
+	    end = stuffs.length;
 	T old = (T)stuffs[--end];
 	size--;
 	return old;
@@ -73,16 +81,15 @@ public class MyDeque<T>{
 	if(size == 0)
 	    throw new NoSuchElementException();
 	int x = (start + 1) % stuffs.length;
-	for(int n = (start + 1) % stuffs.length;n % stuffs.length != (end) % stuffs.length;n++){
+	for(int n = start + 1;n % stuffs.length != end % stuffs.length;n++){
 	    if(priorities[x] > priorities[n % stuffs.length])
 		x = n % stuffs.length;
 	}
 	T result = (T)stuffs[x];
-	for(int n = x;n % stuffs.length != (end - 1) % stuffs.length;n++){
-	    stuffs[n % stuffs.length] = stuffs[(n+1) % stuffs.length];
-	    priorities[n % stuffs.length] = priorities[(n+1) % stuffs.length];
-	}
-	end--;
+	if(end == 0)
+	    end = stuffs.length;
+	stuffs[x] = stuffs[--end % stuffs.length];
+	priorities[x] = priorities[end % stuffs.length];
 	size--;
 	return result;
     }
@@ -92,23 +99,28 @@ public class MyDeque<T>{
 	    return "[ ]";
 	String result = "[ ";
 	int n = start + 1;
-	while(n % stuffs.length != (end - 1) % stuffs.length){
-	    result += stuffs[n++ % stuffs.length].toString() + ", ";
-	}
+	while(n % stuffs.length != (end - 1 + stuffs.length) % stuffs.length)
+	    result += stuffs[n++ % stuffs.length].toString() + ", ";	
 	result += stuffs[n % stuffs.length].toString() + " ]";
 	return result;
     }
 
     private void resize(){
 	Object[] newone = new Object[stuffs.length*2];
+	int[] newpri = new int[priorities.length*2];
 	int x = 0;
 	int n = start + 1;
-	while(n % stuffs.length != (end - 1) % stuffs.length)
-	    newone[x++] = stuffs[n++ % stuffs.length];
+	while(n % stuffs.length != (end - 1 + stuffs.length) % stuffs.length){
+	    newone[x] = stuffs[n % stuffs.length];
+	    if(priorities.length != 0)
+		newpri[x++] = priorities[n++ % stuffs.length];
+	}
 	newone[x] = stuffs[n % stuffs.length];
+	newpri[x] = priorities[n % priorities.length];
 	start = newone.length - 1;
 	end = stuffs.length;
 	stuffs = newone;
+	priorities = newpri;
     }
 
     public static void main(String[] args){
