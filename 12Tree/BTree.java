@@ -125,7 +125,7 @@ public class BTree<E> {
       ====================*/
     public int getHeight( TreeNode<E> curr ) {
 	if(curr.getLeft() == null && curr.getRight() == null)
-	    return 0;
+	    return 1;
 	if(curr.getLeft() == null)
 	    return 1 + getHeight(curr.getRight());
 	if(curr.getRight() == null)
@@ -142,7 +142,11 @@ public class BTree<E> {
       
       ====================*/
     private String getLevel( TreeNode<E> curr, int level, int currLevel ) {
-	return "";
+	if(curr == null)
+	    return "";
+	if(level != currLevel + 1)
+	    return getLevel(curr.getLeft(),level,currLevel+1) + getLevel(curr.getRight(),level,currLevel+1);
+	return curr.toString() + " ";
     }
     
     /*======== public String toString()) ==========
@@ -164,13 +168,17 @@ public class BTree<E> {
             3  4   5
       ====================*/
     public String toString() {
-	return "";
+	int n = getHeight(root);
+	String ans = "";
+	for(int i = 1;i <= n;i++)
+	    ans += getLevel(root,i,0) + "\n";
+	return ans;
     }
-	
 
+    
     public static void main( String[] args ) {
 	BTree<Integer> t = new BTree<Integer>();
-	for ( int i=0; i < 8; i++ ) 
+	for ( int i=0; i < 3; i++ ) 
 	    t.add( i );
 	System.out.println( "Pre-order: ");
 	t.traverse( PRE_ORDER );
