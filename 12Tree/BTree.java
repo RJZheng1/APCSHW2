@@ -36,15 +36,20 @@ public class BTree<E> {
       added to randomly.
       ====================*/
     private void add( TreeNode<E> curr, TreeNode<E> bn ) {
-	if(curr.getLeft() == null)
+	int n = new Random().nextInt(2);
+	if(curr.getLeft() == null && curr.getRight() == null){
+	    if(n == 0)
+		curr.setLeft(bn);
+	    else if(n == 1)
+		curr.setRight(bn);
+	}else if(curr.getLeft() == null){
 	    curr.setLeft(bn);
-	else if(curr.getRight() == null)
+	}else if(curr.getRight() == null){
 	    curr.setRight(bn);
-	else{
-	    int n = new Random().nextInt(2);
+	}else{
 	    if(n == 0)
 		add(curr.getLeft(),bn);
-	    if(n == 1)
+	    else if(n == 1)
 		add(curr.getRight(),bn);
 	}
     }
@@ -119,7 +124,13 @@ public class BTree<E> {
       
       ====================*/
     public int getHeight( TreeNode<E> curr ) {
-	return -1;
+	if(curr.getLeft() == null && curr.getRight() == null)
+	    return 0;
+	if(curr.getLeft() == null)
+	    return 1 + getHeight(curr.getRight());
+	if(curr.getRight() == null)
+	    return 1 + getHeight(curr.getLeft());
+	return 1 + Math.max(getHeight(curr.getLeft()),getHeight(curr.getRight()));
     }
 
     /*======== public String getLevel() ==========
