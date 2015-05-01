@@ -10,12 +10,6 @@ public class BSTreeNode<T extends Comparable<T>>{
 	data = d;
 	left = right = null;
     }
-
-    public BSTreeNode( T d, BSTreeNode<T> left, BSTreeNode<T> right){
-	data = d;
-	this.left = left;
-	this.right = right;
-    }
     
     //accessors
     public T getData() {
@@ -41,5 +35,9 @@ public class BSTreeNode<T extends Comparable<T>>{
     
     public int compareTo( BSTreeNode<T> other){
 	return data.compareTo(other.getData());
+    }
+
+    public String toString(){
+	return d.toString();
     }
 }
