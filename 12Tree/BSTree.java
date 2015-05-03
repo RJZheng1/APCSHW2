@@ -77,8 +77,7 @@ public class BSTree <T extends Comparable<T>> {
 		    while(largest.getRight() != null){
 			largest = largest.getRight();
 		    }
-		    curr.setLeft(remove(curr.getLeft(), largest.getData()));
-		    largest.setLeft(curr.getLeft());
+		    largest.setLeft(remove(curr.getLeft(),largest.getData()));
 		    largest.setRight(curr.getRight());
 		    return largest;
 		}else{
@@ -86,9 +85,8 @@ public class BSTree <T extends Comparable<T>> {
 		    while(smallest.getLeft() != null){
 			smallest = smallest.getLeft();
 		    }
-		    curr.setRight(remove(curr.getRight(), smallest.getData()));
+		    smallest.setRight(remove(curr.getRight(),smallest.getData()));
 		    smallest.setLeft(curr.getLeft());
-		    smallest.setRight(curr.getRight());
 		    return smallest;
 		}
 	    }
