@@ -36,9 +36,9 @@ public class BSTree <T extends Comparable<T>> {
 	if(curr == null){
 	    return t;
 	}else if(curr.compareTo(t) > 0){
-	    curr.setRight(add(curr.getRight(),t));
-	}else{
 	    curr.setLeft(add(curr.getLeft(),t));
+	}else{
+	    curr.setRight(add(curr.getRight(),t));
 	}
 	return curr;
     }
@@ -62,7 +62,9 @@ public class BSTree <T extends Comparable<T>> {
       curr, if it exists.
       ====================*/
     private BSTreeNode<T> remove( BSTreeNode<T> curr, T c ) {
-	if(curr.getData() == c){
+	if(curr == null){
+	    return curr;
+	}else if(curr.getData().equals(c)){
 	    if(isLeaf(curr)){
 		return null;
 	    }else if(curr.getLeft() != null && curr.getRight() == null){
@@ -75,6 +77,7 @@ public class BSTree <T extends Comparable<T>> {
 		    while(largest.getRight() != null){
 			largest = largest.getRight();
 		    }
+		    curr.setLeft(remove(curr.getLeft(), largest.getData()));
 		    largest.setLeft(curr.getLeft());
 		    largest.setRight(curr.getRight());
 		    return largest;
@@ -83,15 +86,16 @@ public class BSTree <T extends Comparable<T>> {
 		    while(smallest.getLeft() != null){
 			smallest = smallest.getLeft();
 		    }
+		    curr.setRight(remove(curr.getRight(), smallest.getData()));
 		    smallest.setLeft(curr.getLeft());
-		    smallest.setRight(curr.getLeft());
+		    smallest.setRight(curr.getRight());
 		    return smallest;
 		}
 	    }
-	}else if(c.compareTo(curr.getData()) > 0){
-	    curr.setRight(remove(curr.getRight(), c));
+	}else if(c.compareTo(curr.getData()) < 0){
+	    curr.setLeft(remove(curr.getLeft(), c));
 	}else{
-	    curr.setLeft(remove(curr.getLeft(),c));
+	    curr.setRight(remove(curr.getRight(),c));
 	}
 	return curr;
     }
@@ -130,7 +134,6 @@ public class BSTree <T extends Comparable<T>> {
 	if(r == null){
 	    return 0;
 	}else{
-	    //System.out.println("recursion height");
 	    return 1 + Math.max(getHeight(r.getLeft()),
 				getHeight(r.getRight()));
 	}
@@ -210,7 +213,15 @@ public class BSTree <T extends Comparable<T>> {
     }
 
     public static void main( String[] args ) {
-	
+	BSTree<String> t = new BSTree<String>();
+	t.add("C");
+	t.add("A");
+	t.add("B");
+	t.add("E");
+	t.add("D");
+	System.out.println(t);
+	t.remove("C");
+	System.out.println(t);
     }
 
 }

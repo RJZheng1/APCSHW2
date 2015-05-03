@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class BSTreeNode<T extends Comparable<T>>{
+public class BSTreeNode<T extends Comparable>{
     private T data;
     private BSTreeNode<T> left;
     private BSTreeNode<T> right;
@@ -38,6 +38,6 @@ public class BSTreeNode<T extends Comparable<T>>{
     }
 
     public String toString(){
-	return d.toString();
+	return data.toString();
     }
 }
