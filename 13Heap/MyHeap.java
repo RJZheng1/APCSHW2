@@ -34,6 +34,30 @@ public class MyHeap{
 	}
     }
 
+    public int remove(){
+	int root = data[1];
+	data[1] = data[data[0]];
+	data[0] = data[0] - 1;
+	pushDown(1);
+	return root;
+    }
+
+    public void pushDown(int index){
+	if(index != 1 && (!compare(index, index*2) || !compare(index,index*2+1))){
+	    if(!compare(index*2,index*2+1)){
+		int swap = data[index];
+		data[index] = data[index*2];
+		data[index/2] = swap;
+		pushUp(index*2);
+	    }else{
+		int swap = data[index];
+		data[index] = data[index*2+1];
+		data[index*2+1] = swap;
+		pushUp(index*2+1);
+	    }
+	}
+    }
+
     public String toString(){
 	return Arrays.toString(data);
     }
@@ -47,6 +71,8 @@ public class MyHeap{
 	h.add(25);
 	System.out.println(h);
 	h.add(4);
+	System.out.println(h);
+	System.out.println(h.remove());
 	System.out.println(h);
     }
 }
