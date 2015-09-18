@@ -59,7 +59,7 @@ public class MyHeap{
 	    if(compare(data[index*2],data[index*2+1])){
 		int swap = data[index];
 		data[index] = data[index*2];
-		data[index*2] = swap;
+		data[index/2] = swap;
 		pushUp(index*2);
 	    }else{
 		int swap = data[index];
