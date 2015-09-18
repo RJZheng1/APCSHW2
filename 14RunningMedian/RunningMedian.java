@@ -9,17 +9,17 @@ public class RunningMedian{
 
     public double getMedian(){
 	if(maxHeap.size() == 0 && minHeap.size() == 0){
-	    throw new IllegalStateException;
-	}else if(maxHeap.size() == 0){
-	    return minHeap.peek();
-	}else if(minHeap.size() == 0){
+	    throw new IllegalStateException();
+	}else if(maxHeap.size() > minHeap.size()){
 	    return maxHeap.peek();
+	}else if(minHeap.size() > maxHeap.size()){
+	    return minHeap.peek();
 	}else{
 	    return (maxHeap.peek() + minHeap.peek()) / 2.0;
 	}
     }
 
-    public void add(double n){
+    public void add(int n){
 	try{
 	    double median = getMedian();
 	    if(n > median){
@@ -35,5 +35,18 @@ public class RunningMedian{
 	}catch(IllegalStateException e){
 	    maxHeap.add(n);
 	}
+    }
+
+    public static void main(String[] args){
+	RunningMedian med = new RunningMedian();
+	med.add(3);
+	System.out.println(med.getMedian());
+	med.add(5);
+	System.out.println(med.getMedian());
+	med.add(4);
+	System.out.println(med.getMedian());
+	med.add(3);
+	med.add(3);
+	System.out.println(med.getMedian());
     }
 }
